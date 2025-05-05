@@ -1,10 +1,6 @@
 # CROWD - Gestionare Acces Evenimente
 
-CROWD este o soluție modernă și robustă pentru gestionarea inteligentă a accesului la evenimente.
-
-## 📜 Descriere Generală
-
-Platforma CROWD oferă un set complet de unelte pentru organizatorii de evenimente, permițând administrarea eficientă a tuturor aspectelor legate de acces, de la crearea evenimentului și gestionarea participanților, până la validarea biletelor la intrare și monitorizarea în timp real.
+Platforma **CROWD** oferă un set complet de unelte pentru organizatorii de evenimente, permițând administrarea eficientă a tuturor aspectelor legate de acces, de la crearea evenimentului și gestionarea participanților, până la validarea biletelor la intrare și monitorizarea în timp real.
 
 ## ✨ Funcționalități Cheie
 
@@ -120,9 +116,46 @@ API-ul backend **CROWD v1** expune funcționalitățile sistemului pentru aplica
 - `PUT /api/tickets/{eventId}/{code}/unscan`
   Anulare scanare bilet.
 
+## 🖥️ Frontend-ul aplicației CROWD
+
+Interfața aplicației **CROWD** este realizată folosind un stack modern web, bazat pe **React** și **TypeScript**, oferind o experiență de utilizare intuitivă și eficientă atât pe desktop, cât și pe dispozitive mobile.
+
+### 🗂️ Structura aplicației
+
+Frontend-ul este organizat în module funcționale, fiecare responsabil de un set de pagini sau componente. Navigarea se face printr-un intermediul unui router `react-router-dom`.
+
+#### Harta paginilor web
+
+- `/` – **Homepage**  
+  Pagina principală, unde utilizatorii se pot autentifica și pot vedea o descriere a aplicației.
+
+- `/register` – **Register Page**  
+  Pagină pentru înregistrarea utilizatorilor.
+
+- `/events` – **Manage Events Page**  
+  Pagina pentru gestionarea evenimentelor: listare, editare, ștergere.
+
+- `/events/create` – **Create Event Page**  
+  Pagină pentru adăugarea unui eveniment nou.
+
+- `/event/:eventCode` – **Event Page**  
+  Pagina de gestionare a unui eveniment.
+
+- `/event/:eventCode/edit` – **Update Event Page**  
+  Permite modificarea informațiilor unui eveniment.
+
+- `/scan` – **Scan Page**  
+  Pagina dedicată scanării biletelor, optimizată pentru uz mobile.
 
 
-![Screenshot 2024-06-13 234049](https://github.com/tudorvezes/Crowd/assets/112432315/6b563e44-1b59-4bdc-b257-d3c526a9a3c7)
-![Screenshot 2024-06-13 233617](https://github.com/tudorvezes/Crowd/assets/112432315/e85ac4c7-4f9d-4297-ba7e-217992ded25c)
-![Screenshot 2024-06-13 233750](https://github.com/tudorvezes/Crowd/assets/112432315/a1a6b77d-7fc0-4404-8860-a87cd6dfccf0)
-![Screenshot 2024-06-13 233802](https://github.com/tudorvezes/Crowd/assets/112432315/21b6d167-3846-4a8a-acf6-1f99a2b92338)
+### 📸 Capturi de ecran
+
+<p align="center">
+  <img src="https://github.com/tudorvezes/Crowd/assets/112432315/6b563e44-1b59-4bdc-b257-d3c526a9a3c7" width="49%"/>
+  <img src="https://github.com/tudorvezes/Crowd/assets/112432315/e85ac4c7-4f9d-4297-ba7e-217992ded25c" width="49%"/>
+</p>
+<p align="center">
+  <img src="https://github.com/tudorvezes/Crowd/assets/112432315/a1a6b77d-7fc0-4404-8860-a87cd6dfccf0" width="49%"/>
+  <img src="https://github.com/tudorvezes/Crowd/assets/112432315/21b6d167-3846-4a8a-acf6-1f99a2b92338" width="49%"/>
+</p>
+
