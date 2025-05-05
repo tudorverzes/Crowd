@@ -1,4 +1,9 @@
-# CROWD - Gestionare Acces Evenimente
+<h1 style="display: flex; align-items: center; margin: 0;">
+  <img src="https://github.com/user-attachments/assets/30288d51-2f60-4e29-92b2-8a5881b4a788" alt="CROWD Logo" height="28" style="margin-right: 10px; vertical-align: 10px;">
+  - Gestionare Acces Evenimente
+</h1>
+
+
 
 Platforma **CROWD** oferă un set complet de unelte pentru organizatorii de evenimente, permițând administrarea eficientă a tuturor aspectelor legate de acces, de la crearea evenimentului și gestionarea participanților, până la validarea biletelor la intrare și monitorizarea în timp real.
 
