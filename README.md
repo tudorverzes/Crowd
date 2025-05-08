@@ -1,159 +1,160 @@
 <h1 style="display: flex; align-items: center; margin: 0;">
   <img src="https://github.com/user-attachments/assets/30288d51-2f60-4e29-92b2-8a5881b4a788" alt="CROWD Logo" height="28" style="margin-right: 10px; vertical-align: 10px;">
-  - Gestionare Acces Evenimente
+  - Event Access Management
 </h1>
 
+The **CROWD** platform offers a comprehensive set of tools for event organizers, allowing efficient management of all access-related aspects, from event creation and participant management to ticket validation at entry and real-time monitoring.
 
+## ✨ Key Features
 
-Platforma **CROWD** oferă un set complet de unelte pentru organizatorii de evenimente, permițând administrarea eficientă a tuturor aspectelor legate de acces, de la crearea evenimentului și gestionarea participanților, până la validarea biletelor la intrare și monitorizarea în timp real.
+*   🚀 **Simplified Event Management**: Easily create, configure (capacity, period, ticket types), modify, and archive events, and define granular permissions for total control.
+*   🎟️ **Flexible Participant Management**: Add participants individually or quickly import large lists using standardized CSV files. Modify or cancel tickets directly from the control panel.
+*   📊 **Real-Time Monitoring and Control**: Instantly view scan statuses, key statistics (tickets sold vs. scanned), and error reports directly in the centralized panel. Search for participants by name, email, or ticket code.
+*   📲 **Fast and Secure Access Validation**: Allow entry teams (via the frontend/mobile app) to efficiently scan tickets (QR/barcode). The system instantly validates the ticket's uniqueness and correctness.
+*   ⚙️ **Advanced Administrative Control**: Administrators can remotely start/stop scanning sessions, manually scan tickets directly from the panel, or cancel an erroneous scan, providing maximum flexibility in unforeseen situations.
+*   🔔 **Proactive Notifications and Reporting**: Receive alerts and detailed reports from scanning terminals in case of errors or issues, allowing for rapid intervention.
+*   📈 **Scalable Foundation**: The architecture based on .NET 8 and Entity Framework Core ensures performance and the ability to manage events of any size.
+*   ⚡ **Live Updates**: Using SignalR, the admin panel receives real-time updates on scans and statistics without requiring a page reload.
 
-## ✨ Funcționalități Cheie
+## 🏗️ System Architecture
 
-*   🚀 **Management Simplificat al Evenimentelor**: Creați, configurați (capacitate, perioadă, tipuri de bilete), modificați și arhivați evenimente cu ușurință și definiți permisiuni granulare pentru un control total.
-*   🎟️ **Gestionare Flexibilă a Participanților**: Adăugați participanți individual sau importați liste mari rapid, folosind fișiere CSV standardizate. Modificați sau anulați bilete direct din panoul de control.
-*   📊 **Monitorizare și Control în Timp Real**: Vizualizați instantaneu statusul scanărilor, statistici cheie (bilete vândute vs. scanate) și rapoarte de eroare direct în panoul centralizat. Căutați participanți după nume, email sau cod de bilet.
-*   📲 **Validare Rapidă și Sigură la Acces**: Permiteți echipelor de la intrare (prin intermediul aplicației frontend/mobile) să scaneze biletele (QR/cod bare) eficient. Sistemul validează instantaneu unicitatea și corectitudinea biletului.
-*   ⚙️ **Control Administrativ Avansat**: Administratorii pot porni/opri remote sesiunile de scanare, pot scana manual bilete direct din panou sau anula o scanare eronată, oferind flexibilitate maximă în situații neprevăzute.
-*   🔔 **Notificări și Raportare Proactivă**: Primiți alerte și rapoarte detaliate de la terminalele de scanare în cazul unor erori sau probleme, permițând intervenția rapidă.
-*   📈 **Fundație Scalabilă**: Arhitectura bazată pe .NET 8 și Entity Framework Core asigură performanță și capacitatea de a gestiona evenimente de orice mărime.
-*   ⚡ **Actualizări Live**: Folosind SignalR, panoul de administrare primește actualizări în timp real despre scanări și statistici, fără a necesita reîncărcarea paginii.
+### Use Case Diagram
 
-## 🏗️ Arhitectura Sistemului
+The use case diagram illustrates the main interactions between actors (Users, Administrators, Scanners) and the CROWD system's functionalities.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/99fd68d5-b5f3-419c-a3ad-75d377176464" alt="class_diag" width="700"/>
+</p>
 
-### Diagrama Cazuri de Utilizare
-
-Diagrama cazurilor de utilizare ilustrează interacțiunile principale dintre actori (Utilizatori, Administratori, Scaneri) și funcționalitățile sistemului CROWD.
-
+The class diagram details the main data structure and relationships between the system's key entities, such as Users, Events, Tickets, and Permissions. It provides an overview of how information is organized and interconnected within the database and business logic.
 <p align="center">
   <img src="https://github.com/user-attachments/assets/404864d9-18c8-4f58-9435-b50d0a35b111" alt="class_diag" width="700"/>
 </p>
-Diagrama de clase detaliază structura principală a datelor și relațiile dintre entitățile cheie ale sistemului, cum ar fi Utilizatorii, Evenimentele, Biletele și Permisiunile. Aceasta oferă o imagine de ansamblu asupra modului în care informațiile sunt organizate și interconectate în cadrul bazei de date și al logicii de business.
 
-### 🔌 Documentație API CROWD v1
+### 🔌 CROWD v1 API Documentation
 
-API-ul backend **CROWD v1** expune funcționalitățile sistemului pentru aplicațiile client (panou web, aplicație mobilă de scanare).
+The **CROWD v1** backend API exposes the system's functionalities for client applications (web panel, mobile scanning app).
 
 #### 👤 Admin
 
 - `POST /api/admin/login`  
-  Autentificare administrator.
+  Administrator login.
 
 - `POST /api/admin`  
-  Creare cont administrator.
+  Create administrator account.
 
 #### 🧑 AppUser (Account)
 
 - `POST /api/account/register`
-  Înregistrare utilizator nou.
+  New user registration.
 
 - `POST /api/account/login`
-  Autentificare utilizator (admin/scanner).
+  User login (admin/scanner).
 
 - `GET /api/account/checkUsername/{username}`  
-  Verificare disponibilitate username.
+  Check username availability.
 
 - `GET /api/account/checkEmail/{email}`  
-  Verificare disponibilitate email.
+  Check email availability.
 
 
 #### 🎉 Event
 
 - `GET /api/event`  
-  Listare evenimente accesibile utilizatorului.
+  List events accessible to the user.
 
 - `POST /api/event`
-  Creare eveniment nou.
+  Create new event.
 
 - `GET /api/event/{eventCode}`  
-  Detalii (sumar) eveniment.
+  Event details (summary).
 
 - `GET /api/event/{eventCode}/short`  
-  Detalii sumarizate eveniment.
+  Summarized event details.
 
 - `GET /api/event/{eventCode}/full`
-  Detalii complete eveniment (pentru panou).
+  Full event details (for panel).
 
 - `DELETE /api/event/{eventId}`
-  Ștergere eveniment.
+  Delete event.
 
 - `PUT /api/event/{eventId}`
-  Actualizare eveniment.
+  Update event.
 
 - `PUT /api/event/{eventId}/scanningState/{state}`
-  Modificare stare scanare (pornit/oprit).
+  Change scanning state (start/stop).
 
 
 #### 📄 Report
 
 - `GET /api/report/{eventId}`
-  Listare raportări eroare pentru eveniment.
+  List error reports for event.
 
 - `POST /api/report/{eventId}`
-  Trimitere raportare eroare nouă.
+  Submit new error report.
 
 
 #### 🎟️ Ticket
 
 - `GET /api/tickets/{eventId}`
-  Listare bilete pentru eveniment.
+  List tickets for event.
 
 - `POST /api/tickets/{eventId}`
-  Adăugare manuală bilet.
+  Manually add ticket.
 
 - `GET /api/tickets/{eventId}/csv`  
-  Descărcare listă bilete în format CSV.
+  Download ticket list in CSV format.
 
 - `POST /api/tickets/{eventId}/csv`
-  Încărcare listă bilete din CSV.
+  Upload ticket list from CSV.
 
 - `GET /api/tickets/{eventId}/{code}`  
-  Detalii bilet specific.
+  Specific ticket details.
 
 - `PUT /api/tickets/{eventId}/{code}`
-  Actualizare detalii bilet.
+  Update ticket details.
 
 - `DELETE /api/tickets/{eventId}/{code}`
-  Ștergere bilet.
+  Delete ticket.
 
 - `PUT /api/tickets/{eventId}/{code}/scan`
-  Marcare bilet ca scanat.
+  Mark ticket as scanned.
 
 - `PUT /api/tickets/{eventId}/{code}/unscan`
-  Anulare scanare bilet.
+  Cancel ticket scan.
 
-## 🖥️ Frontend-ul aplicației CROWD
+## 🖥️ The CROWD Application Frontend
 
-Interfața aplicației **CROWD** este realizată folosind un stack modern web, bazat pe **React** și **TypeScript**, oferind o experiență de utilizare intuitivă și eficientă atât pe desktop, cât și pe dispozitive mobile.
+The **CROWD** application interface is built using a modern web stack, based on **React** and **TypeScript**, offering an intuitive and efficient user experience on both desktop and mobile devices.
 
-### 🗂️ Structura aplicației
+### 🗂️ Application Structure
 
-Frontend-ul este organizat în module funcționale, fiecare responsabil de un set de pagini sau componente. Navigarea se face printr-un intermediul unui router `react-router-dom`.
+The frontend is organized into functional modules, each responsible for a set of pages or components. Navigation is handled via a `react-router-dom` router.
 
-#### Harta paginilor web
+#### Web Page Map
 
 - `/` – **Homepage**  
-  Pagina principală, unde utilizatorii se pot autentifica și pot vedea o descriere a aplicației.
+  Main page, where users can log in and see a description of the application.
 
 - `/register` – **Register Page**  
-  Pagină pentru înregistrarea utilizatorilor.
+  Page for user registration.
 
 - `/events` – **Manage Events Page**  
-  Pagina pentru gestionarea evenimentelor: listare, editare, ștergere.
+  Page for managing events: listing, editing, deleting.
 
 - `/events/create` – **Create Event Page**  
-  Pagină pentru adăugarea unui eveniment nou.
+  Page for adding a new event.
 
 - `/event/:eventCode` – **Event Page**  
-  Pagina de gestionare a unui eveniment.
+  Page for managing an event.
 
 - `/event/:eventCode/edit` – **Update Event Page**  
-  Permite modificarea informațiilor unui eveniment.
+  Allows modification of event information.
 
 - `/scan` – **Scan Page**  
-  Pagina dedicată scanării biletelor, optimizată pentru uz mobile.
+  Page dedicated to ticket scanning, optimized for mobile use.
 
 
-### 📸 Capturi de ecran
+### 📸 Screenshots
 
 <p align="center">
   <img src="https://github.com/tudorvezes/Crowd/assets/112432315/6b563e44-1b59-4bdc-b257-d3c526a9a3c7" width="49%"/>
@@ -163,4 +164,3 @@ Frontend-ul este organizat în module funcționale, fiecare responsabil de un se
   <img src="https://github.com/tudorvezes/Crowd/assets/112432315/a1a6b77d-7fc0-4404-8860-a87cd6dfccf0" width="49%"/>
   <img src="https://github.com/tudorvezes/Crowd/assets/112432315/21b6d167-3846-4a8a-acf6-1f99a2b92338" width="49%"/>
 </p>
-
