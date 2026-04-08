@@ -3,7 +3,7 @@
   - Event Access Management
 </h1>
 
-The **CROWD** platform offers a comprehensive set of tools for event organizers, allowing efficient management of all access-related aspects, from event creation and participant management to ticket validation at entry and real-time monitoring.
+The **CROWD** platform offers a comprehensive set of tools for event organizers, allowing efficient management of all access-related aspects, from event creation and participant management to ticket validation at entry and real-time monitoring. **Discover Crowd on www.crowdscan.live**
 
 ## ✨ Key Features
 
