@@ -1,4 +1,6 @@
-﻿using api.dto.userDto;
+﻿using System;
+using System.Threading.Tasks;
+using api.dto.userDto;
 using api.model;
 using api.service;
 using Microsoft.AspNetCore.Identity;
@@ -47,8 +49,9 @@ public class AppUserController : ControllerBase
 				{
 					return Ok(new NewUserDto
 					{
+						Role = "user",
 						Username = appUser.UserName,
-						Token = _tokenService.CreateToken(appUser)
+						Token = _tokenService.CreateToken(appUser, isAdmin: false)
 					});
 				}
 				else
@@ -76,8 +79,14 @@ public class AppUserController : ControllerBase
 			return BadRequest(ModelState);
 		}
 		
-		var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
+		var user = loginDto.Username.Contains("@") ? await _userManager.FindByEmailAsync(loginDto.Username) : await _userManager.FindByNameAsync(loginDto.Username);
 		if (user == null)
+		{
+			return Unauthorized("Username not found and/or password incorrect");
+		}
+		
+		var isUser = await _userManager.IsInRoleAsync(user, "User");
+		if (!isUser)
 		{
 			return Unauthorized("Username not found and/or password incorrect");
 		}
@@ -90,8 +99,23 @@ public class AppUserController : ControllerBase
 
 		return Ok(new NewUserDto
 		{
+			Role = "user",
 			Username = user.UserName,
-			Token = _tokenService.CreateToken(user)
+			Token = _tokenService.CreateToken(user, isAdmin: false)
 		});
+	}
+	
+	[HttpGet("checkUsername/{username}")]
+	public async Task<IActionResult> CheckUsername(string username)
+	{
+		var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username);
+		return Ok(user != null);
+	}
+	
+	[HttpGet("checkEmail/{email}")]
+	public async Task<IActionResult> CheckEmail(string email)
+	{
+		var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
+		return Ok(user != null);
 	}
 }

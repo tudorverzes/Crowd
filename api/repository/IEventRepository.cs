@@ -1,4 +1,6 @@
-﻿using api.dto.eventDto;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using api.dto.eventDto;
 using api.model;
 
 namespace api.repository;

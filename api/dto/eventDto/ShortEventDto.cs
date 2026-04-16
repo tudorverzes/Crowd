@@ -1,4 +1,5 @@
-﻿using api.model;
+﻿﻿using System;
+ using api.model;
 
 namespace api.dto.eventDto;
 

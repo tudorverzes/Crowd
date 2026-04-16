@@ -1,4 +1,6 @@
-﻿namespace api.dto.reportDto;
+﻿using System;
+
+namespace api.dto.reportDto;
 
 public class ReportDto
 {

@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿﻿﻿using System;
+ using System.Collections.Generic;
+ using System.ComponentModel.DataAnnotations;
+using api.dto.locationDto;
 using api.dto.ticketTypeDto;
 
 namespace api.dto.eventDto;
@@ -14,6 +17,9 @@ public class UpdateEventDto
 	public string Name { get; set; } = string.Empty;
 	
 	[Required]
+	public string Description { get; set; } = string.Empty;
+	
+	[Required]
 	[DataType(DataType.Date)]
 	public DateTime StartDate { get; set; }
 	
@@ -26,6 +32,10 @@ public class UpdateEventDto
 	
 	[Required]
 	public bool Overselling { get; set; }
+	
+	public bool VisibleForTargetedAds { get; set; }
+	
+	public LocationDto? Location { get; set; }
 	
 	public List<TicketTypeDto> ExistingTicketTypes { get; set; } = [];
 	

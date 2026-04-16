@@ -1,4 +1,6 @@
-﻿namespace api.dto.fileDto;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace api.dto.fileDto;
 
 public class CsvFileDto
 {

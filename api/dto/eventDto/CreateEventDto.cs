@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using api.dto.locationDto;
 using api.dto.ticketTypeDto;
 using api.model;
 
@@ -12,6 +15,9 @@ public class CreateEventDto
 	public string Name { get; set; } = string.Empty;
 	
 	[Required]
+	public string Description { get; set; } = string.Empty;
+	
+	[Required]
 	[DataType(DataType.Date)]
 	public DateTime StartDate { get; set; }
 	
@@ -23,10 +29,13 @@ public class CreateEventDto
 	[Required]
 	public bool Overselling { get; set; }
 	
+	public bool VisibleForTargetedAds { get; set; } = false;
+	
 	[Required]
 	[MinLength(1, ErrorMessage = "At least one ticket type must be provided.")]
-	public List<CreateTicketTypeDto> TicketTypes { get; set; } = new List<CreateTicketTypeDto>();
-	public List<string> SuperAdmins { get; set; } = new List<string>();
-	public List<string> Admins { get; set; } = new List<string>();
-	public List<string> Scanners { get; set; } = new List<string>();
+	public List<CreateTicketTypeDto> TicketTypes { get; set; } = [];
+	public List<string> SuperAdmins { get; set; } = [];
+	public List<string> Admins { get; set; } = [];
+	public List<string> Scanners { get; set; } = [];
+	public LocationDto? Location { get; set; }
 }

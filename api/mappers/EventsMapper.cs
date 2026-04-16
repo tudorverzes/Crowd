@@ -1,4 +1,6 @@
-﻿using api.dto.eventDto;
+﻿using System.Collections.Generic;
+using System.Linq;
+using api.dto.eventDto;
 using api.model;
 
 namespace api.mappers;
@@ -15,7 +17,7 @@ public static class EventsMapper
 				Name = permission.Event.Name,
 				StartDate = permission.Event.StartDate,
 				EndDate = permission.Event.EndDate,
-				YourPermission = permission.PermissionType
+				YourPermission = permission.PermissionType,
 			};
 		return null;
 	}
@@ -28,13 +30,15 @@ public static class EventsMapper
 				Id = permission.Event.Id,
 				UniqueCode = permission.Event.UniqueCode,
 				Name = permission.Event.Name,
+				Description = permission.Event.Description,
 				StartDate = permission.Event.StartDate,
 				EndDate = permission.Event.EndDate,
 				Capacity = permission.Event.Capacity,
 				Overselling = permission.Event.Overselling,
 				ScanningState = permission.Event.ScanningState,
 				TicketTypes = permission.Event.TicketTypes.ToList().Select(t => t.ToTicketTypeDto()).ToList(),
-				YourPermission = permission.PermissionType
+				YourPermission = permission.PermissionType,
+				Location = permission.Event.Location.ToLocationDto(),
 			};
 		return null;
 	}
@@ -46,13 +50,15 @@ public static class EventsMapper
 			Id = e.Id,
 			UniqueCode = e.UniqueCode,
 			Name = e.Name,
+			Description = e.Description,
 			StartDate = e.StartDate,
 			EndDate = e.EndDate,
 			Capacity = e.Capacity,
 			Overselling = e.Overselling,
 			ScanningState = e.ScanningState,
 			TicketTypes = e.TicketTypes.ToList().Select(t => t.ToTicketTypeDto()).ToList(),
-			YourPermission = permissionType
+			YourPermission = permissionType,
+			Location = e.Location.ToLocationDto(),
 		};
 	}
 	
@@ -64,13 +70,16 @@ public static class EventsMapper
 				Id = permission.Event.Id,
 				UniqueCode = permission.Event.UniqueCode,
 				Name = permission.Event.Name,
+				Description = permission.Event.Description,
 				StartDate = permission.Event.StartDate,
 				EndDate = permission.Event.EndDate,
 				Capacity = permission.Event.Capacity,
 				Overselling = permission.Event.Overselling,
 				ScanningState = permission.Event.ScanningState,
 				TicketTypes = permission.Event.TicketTypes.ToList().Select(t => t.ToTicketTypeDto()).ToList(),
-				YourPermission = permission.PermissionType
+				YourPermission = permission.PermissionType,
+				Location = permission.Event.Location.ToLocationDto(),
+				VisibleForTargetedAds = permission.Event.VisibleForTargetedAds,
 			};
 		return null;
 	}
@@ -80,13 +89,14 @@ public static class EventsMapper
 		return new Event
 		{
 			Name = e.Name,
+			Description = e.Description,
 			StartDate = e.StartDate,
 			EndDate = e.EndDate,
 			Capacity = e.Capacity,
 			Overselling = e.Overselling,
-			TicketTypes = e.TicketTypes != null
-				? e.TicketTypes.ToList().Select(t => t.FromCreateTicketTypeDto()).ToList()
-				: new List<TicketType>()
+			TicketTypes = e.TicketTypes.ToList().Select(t => t.FromCreateTicketTypeDto()).ToList(),
+			Location = e.Location.ToLocationEntity(),
+			VisibleForTargetedAds = e.VisibleForTargetedAds
 		};
 	}
 }

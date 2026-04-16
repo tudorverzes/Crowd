@@ -1,11 +1,12 @@
-﻿using System.Security.Claims;
-using api.data;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using api.dto.eventDto;
 using api.hub;
 using api.mappers;
 using api.model;
 using api.repository;
-using api.service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,6 @@
-﻿using api.data;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using api.data;
 using api.dto.eventDto;
 using api.mappers;
 using api.model;

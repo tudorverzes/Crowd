@@ -1,4 +1,5 @@
-﻿using api.dto.ticketTypeDto;
+﻿using System;
+using api.dto.ticketTypeDto;
 
 namespace api.dto.ticketDto;
 

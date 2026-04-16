@@ -1,4 +1,4 @@
-﻿using api.dto.ticketTypeDto;
+﻿﻿using api.dto.ticketTypeDto;
 using api.model;
 
 namespace api.mappers;
@@ -13,7 +13,8 @@ public static class TicketTypeMappers
 			Name = ticketType.Name,
 			Price = ticketType.Price,
 			Currency = ticketType.Currency,
-			Quantity = ticketType.Quantity
+			Quantity = ticketType.Quantity,
+			Description = ticketType.Description
 		};
 	}
 	
@@ -24,7 +25,8 @@ public static class TicketTypeMappers
 			Name = createTicketTypeDto.Name,
 			Price = createTicketTypeDto.Price,
 			Currency = createTicketTypeDto.Currency,
-			Quantity = createTicketTypeDto.Quantity
+			Quantity = createTicketTypeDto.Quantity,
+			Description = createTicketTypeDto.Description
 		};
 	}
 	
@@ -36,7 +38,8 @@ public static class TicketTypeMappers
 			Name = ticketTypeDto.Name,
 			Price = ticketTypeDto.Price,
 			Currency = ticketTypeDto.Currency,
-			Quantity = ticketTypeDto.Quantity
+			Quantity = ticketTypeDto.Quantity,
+			Description = ticketTypeDto.Description
 		};
 	}
 	

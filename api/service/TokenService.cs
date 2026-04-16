@@ -1,7 +1,10 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using api.model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace api.service;
@@ -16,12 +19,13 @@ public class TokenService : ITokenService
 		_config = config;
 		_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"] ?? string.Empty));
 	}
-	public string CreateToken(AppUser user)
+	public string CreateToken(AppUser user, bool isAdmin = false)
 	{
 		var claims = new List<Claim>
 		{
 			new Claim("userId", user.Id),
-			new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
+			new Claim("username", user.UserName),
+			new Claim("role", isAdmin ? "admin" : "user")
 		};
 
 		var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

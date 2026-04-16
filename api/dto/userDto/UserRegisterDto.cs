@@ -5,6 +5,7 @@ namespace api.dto.userDto;
 public class UserRegisterDto
 {
 	[Required]
+	[MinLength(3, ErrorMessage = "Username must be at least 3 characters long.")]
 	public string? Username { get; set; }
 	
 	[Required]

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\OMEN\\Pictures\\Teme\\ISS\\CROWD\\CrowdApp\\api\\api.csproj": {}
+    "C:\\Users\\OMEN\\Pictures\\Teme\\AAltele\\ISS\\CROWD\\CrowdApp\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\OMEN\\Pictures\\Teme\\ISS\\CROWD\\CrowdApp\\api\\api.csproj": {
+    "C:\\Users\\OMEN\\Pictures\\Teme\\AAltele\\ISS\\CROWD\\CrowdApp\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\OMEN\\Pictures\\Teme\\ISS\\CROWD\\CrowdApp\\api\\api.csproj",
+        "projectUniqueName": "C:\\Users\\OMEN\\Pictures\\Teme\\AAltele\\ISS\\CROWD\\CrowdApp\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\OMEN\\Pictures\\Teme\\ISS\\CROWD\\CrowdApp\\api\\api.csproj",
+        "projectPath": "C:\\Users\\OMEN\\Pictures\\Teme\\AAltele\\ISS\\CROWD\\CrowdApp\\api\\api.csproj",
         "packagesPath": "C:\\Users\\OMEN\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\OMEN\\Pictures\\Teme\\ISS\\CROWD\\CrowdApp\\api\\obj\\",
+        "outputPath": "C:\\Users\\OMEN\\Pictures\\Teme\\AAltele\\ISS\\CROWD\\CrowdApp\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\OMEN\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -34,6 +34,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -70,6 +75,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -83,6 +92,10 @@
             "Microsoft.Extensions.Identity.Core": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "NetTopologySuite": {
+              "target": "Package",
+              "version": "[2.5.1, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
