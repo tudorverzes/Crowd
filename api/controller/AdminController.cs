@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
+using api.dto.addDto;
 using api.dto.userDto;
+using api.mappers;
 using api.model;
+using api.repository;
 using api.service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +17,20 @@ public class AdminController : ControllerBase
 	private readonly UserManager<AppUser> _userManager;
 	private readonly ITokenService _tokenService;
 	private readonly SignInManager<AppUser> _signInManager;
-	
-	public AdminController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+	private readonly IAdRepository _adRepository;
+	private readonly IEventRepository _eventRepository;
+
+	public AdminController(
+		UserManager<AppUser> userManager, 
+		ITokenService tokenService, 
+		SignInManager<AppUser> signInManager,
+		IAdRepository adRepository, IEventRepository eventRepository)
 	{
 		_userManager = userManager;
 		_tokenService = tokenService;
 		_signInManager = signInManager;
+		_adRepository = adRepository;
+		_eventRepository = eventRepository;
 	}
 
 	[HttpPost("login")]
@@ -100,5 +111,57 @@ public class AdminController : ControllerBase
 			await _userManager.AddToRoleAsync(newAdminUser, "Admin");
 			return Ok();
 		}
+	}
+	
+	[HttpGet("ads/pending")]
+	public async Task<ActionResult<List<ShortAdminAdDto>>> GetPendingAds()
+	{
+		var userRole = HttpContext.User?.FindFirst("role")?.Value;
+		if (userRole != "admin")
+		{
+			return Unauthorized();
+		}
+
+		var ads = await _adRepository.GetAllUnapprovedAsync();
+		return Ok(ads.Select(ad => ad.ToShortAdminAdDto()).ToList());
+	}
+	
+	[HttpGet("ads/{id}")]
+	public async Task<ActionResult<AdDto>> GetAdminAdById(string id)
+	{
+		var userRole = HttpContext.User?.FindFirst("role")?.Value;
+		if (userRole != "admin") return Unauthorized();
+
+		var ad = await _adRepository.GetByIdAsync(id);
+		if (ad == null) return NotFound();
+
+		var targetEventIds = ad.Targets.OfType<SpecificEventTarget>().Select(t => t.EventId).ToList();
+		var events = await _eventRepository.GetByIdsAsync(targetEventIds);
+
+		return Ok(ad.ToAdDto(events));
+	}
+	
+	[HttpPut("ads/{id}/{status:int}")]
+	public async Task<IActionResult> UpdateAdApprovalStatus(string id, int status)
+	{
+		var userRole = HttpContext.User?.FindFirst("role")?.Value;
+		if (userRole != "admin")
+		{
+			return Unauthorized("You do not have permission to perform this action");
+		}
+
+		if (!Enum.IsDefined(typeof(AdApprovalStatus), status))
+		{
+			return BadRequest("Invalid approval status");
+		}
+
+		var ad = await _adRepository.ChangeApprovalStatusAsync(id, (AdApprovalStatus)status);
+        
+		if (ad == null)
+		{
+			return NotFound("Ad not found");
+		}
+
+		return Ok();
 	}
 }

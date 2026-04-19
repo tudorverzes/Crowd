@@ -116,6 +116,13 @@ public class AdController : ControllerBase
 		
 		return Ok(eventIds.Count);
 	}
+
+	[HttpGet("ad-for-event/{eventId}")]
+	public async Task<ActionResult<List<ShortAdDto>>> GetAdForEvent(int eventId)
+	{
+		
+		return Ok();
+	}
 	
 	[HttpPost]
 	public async Task<ActionResult> CreateAd([FromForm] CreateAdDt createAdDto)
@@ -215,7 +222,6 @@ public class AdController : ControllerBase
 					return BadRequest("Uploaded file is not a valid image format.");
 				}
 
-				// 4. Salvarea efectivă a fișierului
 				var uploadsFolder = Path.Combine(_environment.WebRootPath ?? "wwwroot", "uploads", "ads");
 				if (!Directory.Exists(uploadsFolder))
 				{
@@ -252,6 +258,21 @@ public class AdController : ControllerBase
 			};
 			
 			await _adRepository.CreateAsync(ad);
+			
+			// Compute vector for the new ad and add to Qdrant
+			var vTitle = _aiService.GenerateVector(ad.Title);
+			var vDescription = _aiService.GenerateVector(ad.Description);
+			var keywordsString = ad.Keywords.Count != 0
+				? string.Join(" ", ad.Keywords.Select(k => k.Keyword)) 
+				: "";
+			var vKeywords = _aiService.GenerateVector(keywordsString);
+			var finalAdVector = _aiService.MergeVectorsWithWeights([
+				(vTitle, 1.0f),
+				(vDescription, 2.0f),
+				(vKeywords, 5.0f)
+			]);	
+			
+			await _qdrantService.UpsertAdAsync(ad, finalAdVector);
 
 			return Ok();
 		}
@@ -298,35 +319,7 @@ public class AdController : ControllerBase
 		var targetEventIds = ad.Targets.OfType<SpecificEventTarget>().Select(t => t.EventId).ToList();
 		var events = await _eventRepo.GetByIdsAsync(targetEventIds);
 		
-		return Ok(new AdDto
-		{
-			Id = ad.Id,
-			Title = ad.Title,
-			Description = ad.Description,
-			MediaUrl = ad.MediaUrl,
-			ApprovalStatus = (int)ad.ApprovalStatus,
-			Status = (int)ad.Status,
-			StartDate = ad.StartDate,
-			EndDate = ad.EndDate,
-			MaxImpressions = ad.MaxImpressions,
-			ImpressionsCount = ad.ImpressionsCount,
-			Keywords = ad.Keywords.Select(k => k.Keyword).ToList(),
-			GeoTargets = ad.Targets.OfType<GeoRadiusTarget>().Select(t => new GeoTargetDto
-			{
-				Country = t.Country,
-				City = t.City,
-				Latitude = t.Geometry?.Y ?? 0,
-				Longitude = t.Geometry?.X ?? 0,
-				RadiusInKm = t.RadiusInKm
-			}).ToList(),
-			SpecificEventTargets = ad.Targets.OfType<SpecificEventTarget>().Select(t => new EventTargetDto
-			{
-				Id = t.EventId,
-				Name = events.FirstOrDefault(e => e.Id == t.EventId)?.Name ?? "Unknown Event",
-				StartDate = events.FirstOrDefault(e => e.Id == t.EventId)?.StartDate ?? DateTime.MinValue,
-				EndDate = events.FirstOrDefault(e => e.Id == t.EventId)?.EndDate ?? DateTime.MinValue,
-			}).ToList()
-		});
+		return Ok(ad.ToAdDto(events));
 	}
 
 	[HttpDelete("{id}")]

@@ -491,7 +491,7 @@ public class EventController : ControllerBase
 		await _eventRepo.UpdateAsync(updatedEvent);
 		
 		var textToVectorize = $"{updatedEvent.Name}. {updatedEvent.Description}";
-		float[] vector = _aiService.GenerateVector(textToVectorize); // Vom scrie asta data viitoare!
+		var vector = _aiService.GenerateVector(textToVectorize);
 
 		await _qdrantService.UpsertEventAsync(updatedEvent, vector);
 		
