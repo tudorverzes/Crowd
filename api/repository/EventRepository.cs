@@ -5,6 +5,7 @@ using api.dto.eventDto;
 using api.mappers;
 using api.model;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 
 namespace api.repository;
 
@@ -20,6 +21,11 @@ public class EventRepository : IEventRepository
 	public async Task<List<Event>> GetAllAsync()
 	{
 		return await _context.Events.ToListAsync();
+	}
+
+	public async Task<List<Event>> GetByIdsAsync(List<int> ids)
+	{
+		return await _context.Events.Where(e => ids.Contains(e.Id)).ToListAsync();
 	}
 
 	public async Task<Event?> GetByIdAsync(int id)
@@ -98,5 +104,19 @@ public class EventRepository : IEventRepository
 		eventModel.ScanningState = state;
 		await _context.SaveChangesAsync();
 		return eventModel;
+	}
+
+	public async Task<List<Event>> GetEventsByGeoLocationAsync(Point location, double radiusInKm, DateTime? fromDate = null, DateTime? toDate = null)
+	{
+		var radiusInMeters = radiusInKm * 1000;
+
+		var events = await _context.Events
+			.Include(e => e.Location)
+			.Where(e => e.Location != null && e.Location.Geometry != null)
+			.Where(e => e.Location != null && e.Location.Geometry != null && e.Location.Geometry.IsWithinDistance(location, radiusInMeters))
+			.Where(e => (fromDate == null || e.EndDate >= fromDate) && (toDate == null || e.StartDate <= toDate))
+			.ToListAsync();
+
+		return events;
 	}
 }

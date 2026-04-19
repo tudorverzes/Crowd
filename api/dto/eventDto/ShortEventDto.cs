@@ -10,5 +10,5 @@ public class ShortEventDto
 	public string Name { get; set; } = string.Empty;
 	public DateTime StartDate { get; set; }
 	public DateTime EndDate { get; set; }
-	public PermissionType YourPermission { get; set; }
+	public PermissionType? YourPermission { get; set; }
 }

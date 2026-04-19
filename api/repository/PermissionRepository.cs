@@ -40,7 +40,7 @@ public class PermissionRepository : IPermissionRepository
 				.ToListAsync();
 		}
 
-		return new List<Permission>();
+		return [];
 	}
 
 	public async Task<Permission?> GetUserPermissionForEventAsync(string appUserId, int eventId)

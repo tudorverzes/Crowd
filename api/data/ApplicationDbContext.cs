@@ -75,26 +75,10 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
 			.HasValue<GeoRadiusTarget>("GeoRadius")
 			.HasValue<SpecificEventTarget>("SpecificEvent");
 		
-		// Configure GeoRadiusTarget with owned Location
 		builder.Entity<GeoRadiusTarget>()
-			.OwnsOne(g => g.Location, locationBuilder =>
-			{
-				locationBuilder.Property(l => l.VenueName)
-					.HasColumnName("Location_VenueName");
-				locationBuilder.Property(l => l.AddressLine)
-					.HasColumnName("Location_AddressLine");
-				locationBuilder.Property(l => l.Country)
-					.HasColumnName("Location_Country");
-				locationBuilder.Property(l => l.StateOrRegion)
-					.HasColumnName("Location_StateOrRegion");
-				locationBuilder.Property(l => l.City)
-					.HasColumnName("Location_City");
-				
-				// Configure NetTopology geometry for spatial queries
-				locationBuilder.Property(l => l.Geometry)
-					.HasColumnName("Location_Geometry")
-					.HasColumnType("geography");
-			});
+			.Property(g => g.Geometry)
+			.HasColumnName("GeoRadiusTarget_Geometry")
+			.HasColumnType("geography");
 		
 		builder.Entity<SpecificEventTarget>()
 			.HasOne(s => s.Event)
@@ -104,7 +88,6 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
 		builder.Entity<Ticket>()
 			.HasKey(t => new { t.EventId, t.UniqueCode });
 		
-		// Configure Location as an owned type with specific column mappings
 		builder.Entity<Event>()
 			.OwnsOne(e => e.Location, locationBuilder =>
 			{
@@ -119,7 +102,6 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
 			locationBuilder.Property(l => l.City)
 				.HasColumnName("Location_City");
 			
-			// Configure NetTopology geometry for spatial queries
 			locationBuilder.Property(l => l.Geometry)
 				.HasColumnName("Location_Geometry")
 				.HasColumnType("geography");

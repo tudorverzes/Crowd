@@ -7,6 +7,7 @@ using api.hub;
 using api.mappers;
 using api.model;
 using api.repository;
+using api.service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,17 +23,19 @@ public class EventController : ControllerBase
 	private readonly IEventRepository _eventRepo;
 	private readonly IPermissionRepository _permissionRepo;
 	private readonly ITicketTypeRepository _ticketTypeRepo;
-	private readonly IReportRepository _reportRepository;
 	private readonly IHubContext<NotificationHub> _hubContext;
+	private readonly IQdrantService _qdrantService;
+	private readonly IAiService _aiService;
 
-	public EventController(UserManager<AppUser> userManager, IEventRepository eventRepo, IPermissionRepository permissionRepo, IHubContext<NotificationHub> hubContext, ITicketTypeRepository ticketTypeRepo, IReportRepository reportRepository)
+	public EventController(UserManager<AppUser> userManager, IEventRepository eventRepo, IPermissionRepository permissionRepo, IHubContext<NotificationHub> hubContext, ITicketTypeRepository ticketTypeRepo, IReportRepository reportRepository, IQdrantService qdrantService, IAiService aiService)
 	{
 		_userManager = userManager;
 		_eventRepo = eventRepo;
 		_permissionRepo = permissionRepo;
 		_hubContext = hubContext;
 		_ticketTypeRepo = ticketTypeRepo;
-		_reportRepository = reportRepository;
+		_qdrantService = qdrantService;
+		_aiService = aiService;
 	}
 
 	[HttpGet]
@@ -264,6 +267,11 @@ public class EventController : ControllerBase
 				var createdEvent = await _eventRepo.CreateAsync(ev);
 				if (createdEvent != null)
 				{
+					var textToVectorize = $"{createdEvent.Name}. {createdEvent.Description}";
+					float[] vector = _aiService.GenerateVector(textToVectorize);
+
+					await _qdrantService.UpsertEventAsync(createdEvent, vector);
+					
 					return Ok(createdEvent.ToEventDto(PermissionType.SuperAdmin));
 				}
 
@@ -481,6 +489,11 @@ public class EventController : ControllerBase
 		};
 		
 		await _eventRepo.UpdateAsync(updatedEvent);
+		
+		var textToVectorize = $"{updatedEvent.Name}. {updatedEvent.Description}";
+		float[] vector = _aiService.GenerateVector(textToVectorize); // Vom scrie asta data viitoare!
+
+		await _qdrantService.UpsertEventAsync(updatedEvent, vector);
 		
 		await _hubContext.Clients.Group(eventId.ToString()).SendAsync("EventUpdated");
 		return Ok();

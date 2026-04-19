@@ -25,7 +25,7 @@ public class AppUserController : ControllerBase
 	}
 
 	[HttpPost("register")]
-	public async Task<IActionResult> Register([FromBody] UserRegisterDto registerDto)
+	public async Task<ActionResult<NewUserDto>> Register([FromBody] UserRegisterDto registerDto)
 	{
 		try
 		{
@@ -54,16 +54,11 @@ public class AppUserController : ControllerBase
 						Token = _tokenService.CreateToken(appUser, isAdmin: false)
 					});
 				}
-				else
-				{
-					return StatusCode(500, roleResult.Errors);
-				}
+
+				return StatusCode(500, roleResult.Errors);
 			}
-			else 
-			{
-				return BadRequest(createdUser.Errors);
-			}
-			
+
+			return BadRequest(createdUser.Errors);
 		}
 		catch (Exception e)
 		{

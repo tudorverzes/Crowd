@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 
 namespace api.model;
 
@@ -10,6 +11,14 @@ public enum AdStatus
 	Paused = 2,
 }
 
+public enum AdApprovalStatus
+{
+	Pending = 0,
+	Approved = 1,
+	Rejected = 2,
+}
+
+
 public class Ad
 {
 	public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -18,7 +27,7 @@ public class Ad
 	public string Description { get; set; }
 
 	public string OwnerId { get; set; }
-	public AppUser Owner { get; set; }
+	public AppUser? Owner { get; set; }
 
 	public string MediaUrl { get; set; }
 
@@ -26,7 +35,7 @@ public class Ad
 	
 	public List<AdKeyword> Keywords { get; set; } = [];
 
-	public bool IsApproved { get; set; } = false;
+	public AdApprovalStatus ApprovalStatus { get; set; } = AdApprovalStatus.Pending;
 	public AdStatus Status { get; set; } = AdStatus.Draft;
 
 	public DateTime StartDate { get; set; }
@@ -50,7 +59,7 @@ public class GeoRadiusTarget : AdTarget
 	public string Country { get; set; }
 	public string City { get; set; }
 	
-	public EventLocation? Location { get; set; }
+	public Point? Geometry { get; set; }
         
 	public int RadiusInKm { get; set; }
 }

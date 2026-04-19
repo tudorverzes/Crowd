@@ -19,23 +19,7 @@ public static class GeoRadiusTargetMapper
 			Country = dto.Country,
 			City = dto.City,
 			RadiusInKm = dto.RadiusInKm,
-			Location = CreateLocationFromCoordinates(dto.Latitude, dto.Longitude, dto.City, dto.Country)
-		};
-	}
-
-	/// <summary>
-	/// Creates an EventLocation entity from latitude/longitude coordinates.
-	/// </summary>
-	private static EventLocation CreateLocationFromCoordinates(double latitude, double longitude, string city, string country)
-	{
-		return new EventLocation
-		{
-			Country = country,
-			City = city,
-			VenueName = string.Empty,
-			AddressLine = string.Empty,
-			StateOrRegion = string.Empty,
-			Geometry = GeometryFactory.CreatePoint(new Coordinate(longitude, latitude))
+			Geometry = GeometryFactory.CreatePoint(new Coordinate(dto.Longitude, dto.Latitude))
 		};
 	}
 }

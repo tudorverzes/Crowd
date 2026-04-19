@@ -20,25 +20,25 @@ public class AdRepository : IAdRepository
 	{
 		return await _context.Ads
 			.Include(a => a.Targets)
-			.ThenInclude(t => ((GeoRadiusTarget)t).Location)
+			.Include(a => a.Keywords)
 			.ToListAsync();
 	}
 
-	public async Task<List<Ad>> GetAllForUserAsync(string userId)
+	public async Task<List<Ad>>  GetAllForUserAsync(string userId)
 	{
 		return await _context.Ads
 			.Where(ad => ad.OwnerId == userId)
 			.Include(a => a.Targets)
-			.ThenInclude(t => ((GeoRadiusTarget)t).Location)
+			.Include(a => a.Keywords)
 			.ToListAsync();
 	}
 
 	public async Task<List<Ad>> GetAllUnapprovedAsync()
 	{
 		return await _context.Ads
-			.Where(ad => !ad.IsApproved)
+			.Where(ad => ad.ApprovalStatus == AdApprovalStatus.Pending)
 			.Include(a => a.Targets)
-			.ThenInclude(t => ((GeoRadiusTarget)t).Location)
+			.Include(a => a.Keywords)
 			.ToListAsync();
 	}
 
@@ -46,7 +46,7 @@ public class AdRepository : IAdRepository
 	{
 		return await _context.Ads
 			.Include(a => a.Targets)
-			.ThenInclude(t => ((GeoRadiusTarget)t).Location)
+			.Include(a => a.Keywords)
 			.FirstOrDefaultAsync(ad => ad.Id == id);
 	}
 
@@ -59,7 +59,7 @@ public class AdRepository : IAdRepository
 
 	public async Task<Ad?> UpdateAsync(Ad ad)
 	{
-		throw new System.NotImplementedException();
+		throw new NotImplementedException();
 	}
 
 	public async Task<Ad?> DeleteAsync(string id)
@@ -75,7 +75,7 @@ public class AdRepository : IAdRepository
 		return ad;
 	}
 
-	public async Task<Ad?> ChangeApprovalStatusAsync(string id, bool isApproved)
+	public async Task<Ad?> ChangeApprovalStatusAsync(string id, AdApprovalStatus status)
 	{
 		var ad = await _context.Ads.FirstOrDefaultAsync(a => a.Id == id);
 		if (ad == null)
@@ -83,7 +83,7 @@ public class AdRepository : IAdRepository
 			return null;
 		}
 		
-		ad.IsApproved = isApproved;
+		ad.ApprovalStatus = status;
 		await _context.SaveChangesAsync();
 		return ad;
 	}
